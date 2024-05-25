@@ -28,3 +28,14 @@ async def create_shorten_url(
     )
     db_url = repository.create_shorten_url(db, create)
     return schema.UrlCreateResponse(short_url=db_url.short_url)
+
+
+@app.get("/{shorten_url}", response_class=RedirectResponse, status_code=301)
+async def redirect(shorten_url: str, db: Session = Depends(get_db)):
+    model_url: model.Url = repository.get_shorten_url_by_original_url(db, shorten_url)
+    if not model_url:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="데이터를 찾을 수 없습니다."
+        )
+    repository.update_hits(db, shorten_url)
+    return model_url.original_url
