@@ -26,3 +26,11 @@ class Url(UrlBase):
 
     class Config:
         orm_mode = True
+
+
+class UrlStats(UrlBase):
+    short_url: str
+    hits: int
+
+    class Config:
+        orm_mode = True

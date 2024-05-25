@@ -39,3 +39,13 @@ async def redirect(shorten_url: str, db: Session = Depends(get_db)):
         )
     repository.update_hits(db, shorten_url)
     return model_url.original_url
+
+
+@app.get("/stats/{shorten_url}", response_model=schema.UrlStats)
+async def get_stats(shorten_url: str, db: Session = Depends(get_db)):
+    model_url: model.Url = repository.get_shorten_url_by_original_url(db, shorten_url)
+    if not model_url:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="데이터를 찾을 수 없습니다."
+        )
+    return schema.UrlStats(short_url=model_url.short_url, hits=model_url.hits)
