@@ -6,11 +6,15 @@ class UrlBase(BaseModel):
 
 
 class UrlCreateRequest(UrlBase):
-    original_url: str
+    url: str
+
+
+class UrlCreateResponse(UrlBase):
+    short_url: str
 
 
 class UrlCreate(UrlCreateRequest):
-    shorten_url: str
+    short_url: str
 
 
 class Url(UrlBase):

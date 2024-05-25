@@ -8,7 +8,7 @@ def get_shorten_url_by_original_url(db: Session, shorten_url: str) -> model.Url:
 
 
 def create_shorten_url(db: Session, url: schema.UrlCreate):
-    db_url = model.Url(original_url=url.original_url, short_url=url.shorten_url)
+    db_url = model.Url(original_url=url.url, short_url=url.short_url)
     db.add(db_url)
     db.commit()
     db.refresh(db_url)
